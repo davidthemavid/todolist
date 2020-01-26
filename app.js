@@ -3,8 +3,10 @@ const bodyParser = require("body-parser");
 let port = process.env.PORT || 3000;
 
 const app = express();
+let items = [];
 
 app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function(req, res) {
   let today = new Date();
@@ -16,15 +18,16 @@ app.get("/", function(req, res) {
   };
 
   let date = today.toLocaleDateString("en-US", dateOptions);
-  console.log(today);
-  console.log(date);
 
-  res.render("list", { day: date });
+  res.render("list", { day: date, newItem: items });
 });
 
 app.post("/", function(req, res) {
-  let listItem = req.body.todo;
+  let listItem = req.body.addInput;
+  items.push(listItem);
   console.log(listItem);
+
+  res.redirect("/");
 });
 
 app.listen(port, function() {

@@ -10,13 +10,18 @@
     <h1>It's <%=day%></h1>
     <h2>What are your priorities today?</h2>
     <form method="POST" action="/">
-      <input type="text" name="todo" placeholder="Add a priority" autofocus />
+      <input
+        type="text"
+        name="addInput"
+        placeholder="Add a priority"
+        autofocus
+      />
       <button type="submit" name="btn">Add</button>
     </form>
     <ul id="list">
-      <li>Buy groceries</li>
-      <li>Pay hydro bill</li>
-      <li>Make dinner</li>
+      <% for(i=0; i<newItem.length; i++){ %>
+      <li><%= newItem[i] %></li>
+     <% } %>
     </ul>
   </body>
 </html>
