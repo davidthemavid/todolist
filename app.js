@@ -1,8 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const config = require("./config.js");
+const key = config.key;
 
-let key = config.key;
+//https://darksky.net/dev/docs
+let lat = "";
+let long = "";
+let darkSky = `https://api.darksky.net/forecast/${key}/${lat},${long}`;
 let port = process.env.PORT || 3000;
 
 const app = express();
