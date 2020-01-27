@@ -8,21 +8,31 @@
     <link rel="stylesheet" href="../styles/styles.css">
   </head>
   <body>
-    <h1 id="heading">It's <%=day%></h1>
-    <h2>What are your priorities today?</h2>
-    <form method="POST" action="/">
+    <div class="box" id="heading">
+<h1>It's <%=day%></h1>
+    </div>
+        <h2>What are your priorities today?</h2>
+
+            <div class="box">
+
+    <form class="item" method="POST" action="/">
       <input
         type="text"
         name="addInput"
         placeholder="Add a priority"
+        autocomplete="off"
         autofocus
       />
-      <button type="submit" name="btn">Add</button>
+      <button type="submit" name="btn">+</button>
     </form>
-    <ul id="list">
-      <% for(i=0; i<newItem.length; i++){ %>
-      <li><%= newItem[i] %></li>
+
+            <% for(i=0; i<newItem.length; i++){ %>
+      <div class="item">
+                <input type="checkbox">
+      <p><%= newItem[i] %></p>
+           </div>
      <% } %>
-    </ul>
+    </div>
+
   </body>
 </html>
