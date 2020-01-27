@@ -34,12 +34,21 @@ h2 {
   border-bottom: 1px solid #f1f1f1;
 }
 
+.form {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f1f1f1;
+}
+
 .item:last-child {
   border-bottom: 0;
 }
 
 input:checked + p {
   text-decoration: line-through;
+  font-style: italic;
+  opacity: 0.2;
   text-decoration-color: #a683e3;
 }
 
@@ -68,7 +77,7 @@ button {
   background-color: #a683e3;
   color: #fff;
   font-size: 30px;
-  padding-bottom: 6px;
+  padding-bottom: 1px;
   border-width: 0;
 }
 

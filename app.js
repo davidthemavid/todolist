@@ -1,5 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const config = require("./config.js");
+
+let key = config.key;
 let port = process.env.PORT || 3000;
 
 const app = express();
@@ -26,7 +29,6 @@ app.get("/", function(req, res) {
 app.post("/", function(req, res) {
   let listItem = req.body.addInput;
   items.push(listItem);
-  console.log(listItem);
 
   res.redirect("/");
 });
