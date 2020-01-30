@@ -5,6 +5,8 @@ const config = require("./config.js");
 const key = config.key;
 const app = express();
 let port = process.env.PORT || 3000;
+let forcast = [];
+let weekForcast = [];
 
 //https://darksky.net/dev/docs
 //vancouver lat/long
@@ -13,15 +15,23 @@ let long = "-123.1207";
 let darkSky = `https://api.darksky.net/forecast/${key}/${lat},${long}`;
 
 request(`${darkSky}`, { json: true }, (err, res, body) => {
-  let forcast = body.minutely.summary;
-  let weeklyForcast = body.daily.summary;
-  console.log(forcast);
-  if (err) {
-    console.log(err);
+  if (!err && res.statusCode == 200) {
+    console.log(res.statusCode);
+    let currentForcast = body.minutely.summary;
+    let weeklyForcast = body.daily.summary;
+    forcast.push(currentForcast);
+    weekForcast.push(weeklyForcast);
+    //console.log(forcast);
   } else {
-    res.render("list", { weather: forcast });
+    console.log("error");
   }
 });
+
+if (weekForcast.length > 0) {
+  console.log(weekForcast);
+} else {
+  console.log("nothing");
+}
 
 let items = [];
 
@@ -42,7 +52,7 @@ app.get("/", function(req, res) {
 
   let date = today.toLocaleDateString("en-US", dateOptions);
 
-  res.render("list", { day: date, newItem: items });
+  res.render("list", { day: date, newItem: items, weather: forcast });
 });
 
 app.post("/", function(req, res) {
