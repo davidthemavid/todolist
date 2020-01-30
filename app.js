@@ -16,7 +16,9 @@ request(`${darkSky}`, { json: true }, (err, res, body) => {
   if (err) {
     console.log(err);
   } else {
-    console.log(body);
+    let currentForcast = body.minutely.summary;
+    let weeklyForcast = body.daily.summary;
+    console.log(currentForcast);
   }
 });
 
