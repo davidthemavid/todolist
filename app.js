@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const config = require("./config.js");
 const key = config.key;
+const app = express();
 let port = process.env.PORT || 3000;
 
 //https://darksky.net/dev/docs
@@ -10,19 +11,18 @@ let port = process.env.PORT || 3000;
 let lat = "49.2827";
 let long = "-123.1207";
 let darkSky = `https://api.darksky.net/forecast/${key}/${lat},${long}`;
-//console.log(darkSky);
 
 request(`${darkSky}`, { json: true }, (err, res, body) => {
+  let forcast = body.minutely.summary;
+  let weeklyForcast = body.daily.summary;
+  console.log(forcast);
   if (err) {
     console.log(err);
   } else {
-    let currentForcast = body.minutely.summary;
-    let weeklyForcast = body.daily.summary;
-    console.log(currentForcast);
+    res.render("list", { weather: forcast });
   }
 });
 
-const app = express();
 let items = [];
 
 app.set("view engine", "ejs");
