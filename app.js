@@ -5,32 +5,32 @@ const config = require("./config.js");
 const key = config.key;
 const ipKey = config.ipKey;
 const app = express();
+
 let port = process.env.PORT || 3000;
 let forcast = [];
 let weekForcast = [];
 
-//https://darksky.net/dev/docs
-//vancouver lat/long
-let lat = "49.2820";
-let long = "-123.1207";
-let darkSky = `https://api.darksky.net/forecast/${key}/${lat},${long}`;
-let ipStack = `http://api.ipstack.com/check?access_key=${ipKey}`;
-
-request(`${ipStack}`, { json: true }, (err, res, body) => {
-  console.log(res.statusCode);
-  console.log(body.city);
-});
-
-request(`${darkSky}`, { json: true }, (err, res, body) => {
-  if (!err && res.statusCode == 200) {
-    //console.log(res.statusCode);
-    let currentForcast = body.minutely.summary;
-    let weeklyForcast = body.daily.summary;
-    forcast.push(currentForcast);
-    weekForcast.push(weeklyForcast);
-    //console.log(forcast);
+request(`http://api.ipstack.com/check?access_key=${ipKey}`, { json: true }, (err, res, body) => {
+  if (err) {
+    console.log("first error" + err);
   } else {
-    console.log("DarkSky error" + err);
+    let lat = body.latitude;
+    let long = body.longitude;
+    request(
+      `https://api.darksky.net/forecast/${key}/${lat},${long}`,
+      { json: true },
+      (err, res, body) => {
+        console.log(res.statusCode);
+        if (err) {
+          console.log("2nd error" + err);
+        } else {
+          let currentForcast = body.minutely.summary;
+          let weeklyForcast = body.daily.summary;
+          forcast.push(currentForcast);
+          weekForcast.push(weeklyForcast);
+        }
+      }
+    );
   }
 });
 
