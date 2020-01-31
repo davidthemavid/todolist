@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const config = require("./config.js");
 const key = config.key;
+const ipKey = config.ipKey;
 const app = express();
 let port = process.env.PORT || 3000;
 let forcast = [];
@@ -10,28 +11,28 @@ let weekForcast = [];
 
 //https://darksky.net/dev/docs
 //vancouver lat/long
-let lat = "49.2827";
+let lat = "49.2820";
 let long = "-123.1207";
 let darkSky = `https://api.darksky.net/forecast/${key}/${lat},${long}`;
+let ipStack = `http://api.ipstack.com/check?access_key=${ipKey}`;
+
+request(`${ipStack}`, { json: true }, (err, res, body) => {
+  console.log(res.statusCode);
+  console.log(body.city);
+});
 
 request(`${darkSky}`, { json: true }, (err, res, body) => {
   if (!err && res.statusCode == 200) {
-    console.log(res.statusCode);
+    //console.log(res.statusCode);
     let currentForcast = body.minutely.summary;
     let weeklyForcast = body.daily.summary;
     forcast.push(currentForcast);
     weekForcast.push(weeklyForcast);
     //console.log(forcast);
   } else {
-    console.log("error");
+    console.log("DarkSky error" + err);
   }
 });
-
-if (weekForcast.length > 0) {
-  console.log(weekForcast);
-} else {
-  console.log("nothing");
-}
 
 let items = [];
 
