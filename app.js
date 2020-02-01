@@ -29,14 +29,14 @@ request(
           if (err) {
             console.log("DarkySky error: " + err);
           } else {
-            let currentForcast = body.minutely.summary;
+            let currentForcast = body.currently.summary;
             let weeklyForcast = body.daily.summary;
-            let weatherType = body.minutely.icon;
+            let weatherType = body.currently.icon;
 
             forcast.push(currentForcast);
             weekForcast.push(weeklyForcast);
             weather.push(weatherType);
-            console.log(weatherType);
+            console.log("icon : " + weatherType);
           }
         }
       );
@@ -44,14 +44,15 @@ request(
   }
 );
 
+//selects image based off darkSky icon value
 if (weather === "clear-day" || "clear-night") {
-  icon = "sun.jpg";
+  icon = "./images/sun.jpg";
 } else if (weather === "rain") {
-  icon = "rain.jpg";
+  icon = "./images/rain.jpg";
 } else if (weather === "snow" || "sleet") {
-  icon = "snow.jpg";
+  icon = "./images/snow.jpg";
 } else {
-  icon = "overcast.jpg";
+  icon = "./images/overcast.jpg";
 }
 console.log(icon);
 
