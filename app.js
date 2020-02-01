@@ -9,30 +9,51 @@ const app = express();
 let port = process.env.PORT || 3000;
 let forcast = [];
 let weekForcast = [];
+let weather = [];
+let icon;
 
-request(`http://api.ipstack.com/check?access_key=${ipKey}`, { json: true }, (err, res, body) => {
-  if (err) {
-    console.log("first error" + err);
-  } else {
-    let lat = body.latitude;
-    let long = body.longitude;
-    request(
-      `https://api.darksky.net/forecast/${key}/${lat},${long}`,
-      { json: true },
-      (err, res, body) => {
-        console.log(res.statusCode);
-        if (err) {
-          console.log("2nd error" + err);
-        } else {
-          let currentForcast = body.minutely.summary;
-          let weeklyForcast = body.daily.summary;
-          forcast.push(currentForcast);
-          weekForcast.push(weeklyForcast);
+request(
+  `http://api.ipstack.com/check?access_key=${ipKey}`,
+  { json: true },
+  (err, res, body) => {
+    if (err) {
+      console.log("ipStack error: " + err);
+    } else {
+      let lat = body.latitude;
+      let long = body.longitude;
+      request(
+        `https://api.darksky.net/forecast/${key}/${lat},${long}`,
+        { json: true },
+        (err, res, body) => {
+          console.log(res.statusCode);
+          if (err) {
+            console.log("DarkySky error: " + err);
+          } else {
+            let currentForcast = body.minutely.summary;
+            let weeklyForcast = body.daily.summary;
+            let weatherType = body.minutely.icon;
+
+            forcast.push(currentForcast);
+            weekForcast.push(weeklyForcast);
+            weather.push(weatherType);
+            console.log(weatherType);
+          }
         }
-      }
-    );
+      );
+    }
   }
-});
+);
+
+if (weather === "clear-day" || "clear-night") {
+  icon = "sun.jpg";
+} else if (weather === "rain") {
+  icon = "rain.jpg";
+} else if (weather === "snow" || "sleet") {
+  icon = "snow.jpg";
+} else {
+  icon = "overcast.jpg";
+}
+console.log(icon);
 
 let items = [];
 
@@ -42,7 +63,7 @@ app.use(express.static("public"));
 
 app.get("/");
 
-app.get("/", function(req, res) {
+app.get("/", (req, res) => {
   let today = new Date();
 
   let dateOptions = {
@@ -53,16 +74,21 @@ app.get("/", function(req, res) {
 
   let date = today.toLocaleDateString("en-US", dateOptions);
 
-  res.render("list", { day: date, newItem: items, weather: forcast });
+  res.render("list", {
+    day: date,
+    newItem: items,
+    weather: forcast,
+    icon: icon
+  });
 });
 
-app.post("/", function(req, res) {
+app.post("/", (req, res) => {
   let listItem = req.body.addInput;
   items.push(listItem);
 
   res.redirect("/");
 });
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log("~~~ Server started on port " + port + " ~~~");
 });
