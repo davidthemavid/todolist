@@ -11,6 +11,8 @@ let forcast = [];
 let extendedForcast = [];
 let weather = [];
 let icon;
+let temp = [];
+let countryCode = [];
 
 request(
   `http://api.ipstack.com/check?access_key=${ipKey}`,
@@ -21,6 +23,9 @@ request(
     } else {
       let lat = body.latitude;
       let long = body.longitude;
+      let country = body.country_code;
+      countryCode.push(country);
+
       request(
         `https://api.darksky.net/forecast/${key}/${lat},${long}`,
         { json: true },
@@ -31,6 +36,7 @@ request(
             let currentForcast = body.currently.summary;
             let weeklyForcast = body.daily.summary;
             let weatherType = body.currently.icon;
+            let currentTemp = body.currently.temperature;
 
             if (
               weatherType === "clear" ||
@@ -40,16 +46,16 @@ request(
               icon = "./images/sun.jpg";
             } else if (weatherType === "rain") {
               icon = "./images/rain.jpg";
-            } else if (weatherType === "snow") {
+            } else if (weatherType === "snow" || weatherType === "sleet") {
               icon = "./images/snow.jpg";
             } else {
               icon = "./images/overcast.jpg";
             }
+
             forcast.push(currentForcast);
             extendedForcast.push(weeklyForcast);
             weather.push(weatherType);
-            console.log("weather : " + weatherType);
-            console.log(forcast);
+            temp.push(currentTemp);
           }
         }
       );
@@ -81,7 +87,8 @@ app.get("/", (req, res) => {
     newItem: items,
     weather: forcast,
     extWeather: extendedForcast,
-    icon: icon
+    icon: icon,
+    temp: temp
   });
 });
 

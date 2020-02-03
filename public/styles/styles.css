@@ -20,24 +20,41 @@ h2 {
   max-width: 400px;
   margin: 50px auto;
   background: white;
-  border-radius: 5px;
+  border-radius: 5px 5px 0px 0px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
 
 .weather__box {
   min-height: 400px;
+  box-sizing: border-box;
+  position: relative;
 }
+
+.weather__text {
+  text-align: left;
+  position: absolute;
+  bottom: 130px;
+}
+
+.weather__temp {
+  color: white;
+  text-shadow: 1px 2px black;
+  font-size: 30px;
+  padding-bottom: 10px;
+}
+
 .priority__box {
   background: black;
   padding: 6px 0px;
   min-height: 30px;
-  box-shadow: 1px 3px grey;
-  border-radius: 6px;
+  border-radius: 6px 6px 0px 0px;
 }
+
 #heading {
   background-color: #ff729d;
+  max-height: 100px;
   text-align: center;
-  height: 550px;
+  box-sizing: border-box;
 }
 
 .item {
@@ -66,14 +83,10 @@ h2 {
 #weather {
   color: white;
   font-size: 30px;
-  position: absolute;
-  bottom: 278px;
   padding: 8px;
   text-shadow: 2px 3px black;
 }
 #extWeather {
-  bottom: 200px;
-  position: absolute;
   color: white;
   font-size: 15px;
   text-shadow: 1px 2px black;
