@@ -25,7 +25,7 @@ request(
         `https://api.darksky.net/forecast/${key}/${lat},${long}`,
         { json: true },
         (err, res, body) => {
-          console.log(res.statusCode);
+          //console.log(res.statusCode);
           if (err) {
             console.log("DarkySky error: " + err);
           } else {
@@ -33,29 +33,33 @@ request(
             let weeklyForcast = body.daily.summary;
             let weatherType = body.currently.icon;
 
+            if (
+              weatherType === "clear" ||
+              weatherType === "clear-night" ||
+              weatherType === "clear-day"
+            ) {
+              icon = "./images/sun.jpg";
+            } else if (weatherType === "rain") {
+              icon = "./images/rain.jpg";
+            } else if (weatherType === "snow") {
+              icon = "./images/snow.jpg";
+            } else {
+              icon = "./images/overcast.jpg";
+              //need to push decided icon to outside the scope
+            }
             forcast.push(currentForcast);
             weekForcast.push(weeklyForcast);
             weather.push(weatherType);
-            console.log("icon : " + weatherType);
+            console.log("weather : " + weatherType);
+            console.log(forcast);
           }
         }
       );
     }
   }
 );
-
 //selects image based off darkSky icon value
-if (weather === "clear-day" || "clear-night") {
-  icon = "./images/sun.jpg";
-} else if (weather === "rain") {
-  icon = "./images/rain.jpg";
-} else if (weather === "snow" || "sleet") {
-  icon = "./images/snow.jpg";
-} else {
-  icon = "./images/overcast.jpg";
-}
-console.log(icon);
-
+console.log("icon: " + icon);
 let items = [];
 
 app.set("view engine", "ejs");
