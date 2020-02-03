@@ -8,7 +8,7 @@ const app = express();
 
 let port = process.env.PORT || 3000;
 let forcast = [];
-let weekForcast = [];
+let extendedForcast = [];
 let weather = [];
 let icon;
 
@@ -17,7 +17,7 @@ request(
   { json: true },
   (err, res, body) => {
     if (err) {
-      console.log("ipStack error: " + err);
+      console.log("ipStack error: " + err + res.statusCode);
     } else {
       let lat = body.latitude;
       let long = body.longitude;
@@ -25,9 +25,8 @@ request(
         `https://api.darksky.net/forecast/${key}/${lat},${long}`,
         { json: true },
         (err, res, body) => {
-          //console.log(res.statusCode);
           if (err) {
-            console.log("DarkySky error: " + err);
+            console.log("DarkySky error: " + err + res.statusCode);
           } else {
             let currentForcast = body.currently.summary;
             let weeklyForcast = body.daily.summary;
@@ -45,10 +44,9 @@ request(
               icon = "./images/snow.jpg";
             } else {
               icon = "./images/overcast.jpg";
-              //need to push decided icon to outside the scope
             }
             forcast.push(currentForcast);
-            weekForcast.push(weeklyForcast);
+            extendedForcast.push(weeklyForcast);
             weather.push(weatherType);
             console.log("weather : " + weatherType);
             console.log(forcast);
@@ -58,8 +56,7 @@ request(
     }
   }
 );
-//selects image based off darkSky icon value
-console.log("icon: " + icon);
+
 let items = [];
 
 app.set("view engine", "ejs");
@@ -83,6 +80,7 @@ app.get("/", (req, res) => {
     day: date,
     newItem: items,
     weather: forcast,
+    extWeather: extendedForcast,
     icon: icon
   });
 });

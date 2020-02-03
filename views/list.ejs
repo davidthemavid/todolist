@@ -15,17 +15,23 @@
 <h1>It's <%=day%></h1>
 <div class="weather__box">
 <img src=<%=icon%> alt="weather-icon" class="weather-image">
+<div class="weather__text">
 <p id="weather"><%= weather %></p>
-<div class="priority__box">   
-  <h2>What are your priorities today?</h2></div>
-        <div class="box">
+<p id="extWeather"><%= extWeather %></p>
 </div>
+<div class="priority__box">   
+  <h2>What are your priorities today?</h2>
+</div>
+
+</div>
+
 <form class="form" method="POST" action="/">
 
   <input
     type="text"
     name="addInput"
-    placeholder="Add a priority"
+    class="form__input"
+    placeholder="Start with an action or verb""
     autocomplete="off"
     autofocus
   />
@@ -34,7 +40,6 @@
 </form>
 
 
-    </div>
 
     
 
