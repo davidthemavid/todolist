@@ -48,6 +48,8 @@ request(
               icon = "./images/rain.jpg";
             } else if (weatherType === "snow" || weatherType === "sleet") {
               icon = "./images/snow.jpg";
+            } else if (weatherType === "fog") {
+              icon = "./images/fog.jpg";
             } else {
               icon = "./images/overcast.jpg";
             }
