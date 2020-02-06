@@ -12,7 +12,6 @@ let extendedForcast = [];
 let weather = [];
 let icon;
 let temp = [];
-let countryCode = [];
 
 request(
   `http://api.ipstack.com/check?access_key=${ipKey}`,
@@ -24,8 +23,6 @@ request(
       let lat = body.latitude;
       let long = body.longitude;
       let country = body.country_code;
-      countryCode.push(country);
-
       request(
         `https://api.darksky.net/forecast/${key}/${lat},${long}`,
         { json: true },
@@ -37,6 +34,18 @@ request(
             let weeklyForcast = body.daily.summary;
             let weatherType = body.currently.icon;
             let currentTemp = body.currently.temperature;
+            //console.log(currentTemp);
+            console.log(country);
+
+            if (country !== "us") {
+              currentTemp = (currentTemp - 32) * (5 / 9);
+              let celsius = currentTemp.toString().slice(0, 3);
+              console.log(celsius);
+              temp.push(celsius);
+              //console.log(currentTemp);
+            } else {
+              temp.push(currentTemp);
+            }
 
             if (
               weatherType === "clear" ||
@@ -57,7 +66,6 @@ request(
             forcast.push(currentForcast);
             extendedForcast.push(weeklyForcast);
             weather.push(weatherType);
-            temp.push(currentTemp);
           }
         }
       );

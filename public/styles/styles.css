@@ -83,7 +83,7 @@ h2 {
 #weather {
   color: white;
   font-size: 30px;
-  padding: 8px;
+  padding: 8px 5px;
   text-shadow: 2px 3px black;
 }
 #extWeather {
