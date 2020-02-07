@@ -2,6 +2,7 @@
 Simple todo list using node, request, express, and ejs.
 <br>Uses ipStack & DarkSky apis to get your location, temperature, and weather details. 
 <br>Displays current day & date.
+<br>Displays an image based off your current weather.
 
 Requires an ipStack & DarkSky API KEY.
 
