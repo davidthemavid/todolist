@@ -9,6 +9,8 @@ Requires an ipStack & DarkSky API KEY.
 <br>https://ipstack.com/documentation
 <br>https://darksky.net/dev
 
+<img src = "./public/images/todolist.jpg">
+
 # Instructions
 Create a <b>config.js</b> file in the main directory.
 
