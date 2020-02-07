@@ -18,7 +18,7 @@ request(
   { json: true },
   (err, res, body) => {
     if (err) {
-      console.log("ipStack error: " + err + res.statusCode);
+      console.log("ipStack error: " + err + " " + res.statusCode);
     } else {
       let lat = body.latitude;
       let long = body.longitude;
@@ -28,7 +28,7 @@ request(
         { json: true },
         (err, res, body) => {
           if (err) {
-            console.log("DarkySky error: " + err + res.statusCode);
+            console.log("DarkySky error: " + err + " " + res.statusCode);
           } else {
             let currentForcast = body.currently.summary;
             let weeklyForcast = body.daily.summary;
