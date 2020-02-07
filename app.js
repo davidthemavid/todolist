@@ -2,8 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const rq = require("request-promise-native");
 const config = require("./config.js");
-const key = config.key;
-const ipKey = config.ipKey;
+let key; //= config.key;
+let ipKey; //= config.ipKey;
 const app = express();
 let port = process.env.PORT || 3000;
 
