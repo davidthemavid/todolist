@@ -19,7 +19,8 @@ rq(`http://api.ipstack.com/check?access_key=${ipKey}`, { json: true })
     let country = response.country_code;
 
     rq(`https://api.darksky.net/forecast/${key}/${lat},${long}`, {
-      json: true}).then((response, body) => {
+      json: true
+    }).then((response, body) => {
       let weatherImage = response.currently.icon;
       let currentWeather = response.currently.summary;
       let dailyForcast = response.daily.summary;
