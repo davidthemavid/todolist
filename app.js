@@ -1,77 +1,55 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const request = require("request");
+const rq = require("request-promise-native");
 const config = require("./config.js");
 const key = config.key;
 const ipKey = config.ipKey;
 const app = express();
-
 let port = process.env.PORT || 3000;
+
 let forcast = [];
-let extendedForcast = [];
 let weather = [];
-let icon;
 let temp = [];
+let icon;
 
-request(
-  `http://api.ipstack.com/check?access_key=${ipKey}`,
-  { json: true },
-  (err, res, body) => {
-    if (err) {
-      console.log("ipStack error: " + err + " " + res.statusCode);
-    } else {
-      let lat = body.latitude;
-      let long = body.longitude;
-      let country = body.country_code;
-      request(
-        `https://api.darksky.net/forecast/${key}/${lat},${long}`,
-        { json: true },
-        (err, res, body) => {
-          if (err) {
-            console.log("DarkySky error: " + err + " " + res.statusCode);
-          } else {
-            let currentForcast = body.currently.summary;
-            let weeklyForcast = body.daily.summary;
-            let weatherType = body.currently.icon;
-            let currentTemp = body.currently.temperature;
-            //console.log(currentTemp);
-            console.log(country);
+rq(`http://api.ipstack.com/check?access_key=${ipKey}`, { json: true })
+  .then((response, body) => {
+    let lat = response.latitude;
+    let long = response.longitude;
+    let country = response.country_code;
 
-            if (country !== "us") {
-              currentTemp = (currentTemp - 32) * (5 / 9);
-              let celsius = currentTemp.toString().slice(0, 3);
-              console.log(celsius);
-              temp.push(celsius);
-              //console.log(currentTemp);
-            } else {
-              temp.push(currentTemp);
-            }
+    rq(`https://api.darksky.net/forecast/${key}/${lat},${long}`, {
+      json: true}).then((response, body) => {
+      let weatherImage = response.currently.icon;
+      let currentWeather = response.currently.summary;
+      let dailyForcast = response.daily.summary;
+      let currentTemp = response.currently.temperature;
+      let conversion =
+        country != "us"
+          ? (currentTemp = (currentTemp - 32) * (5 / 9))
+          : currentTemp;
+      let correctTemp = conversion.toString().slice(0, 3);
 
-            if (
-              weatherType === "clear" ||
-              weatherType === "clear-night" ||
-              weatherType === "clear-day"
-            ) {
-              icon = "./images/sun.jpg";
-            } else if (weatherType === "rain") {
-              icon = "./images/rain.jpg";
-            } else if (weatherType === "snow" || weatherType === "sleet") {
-              icon = "./images/snow.jpg";
-            } else if (weatherType === "fog") {
-              icon = "./images/fog.jpg";
-            } else {
-              icon = "./images/overcast.jpg";
-            }
+      temp.push(correctTemp);
+      weather.push(currentWeather);
+      forcast.push(dailyForcast);
 
-            forcast.push(currentForcast);
-            extendedForcast.push(weeklyForcast);
-            weather.push(weatherType);
-          }
-        }
-      );
-    }
-  }
-);
+      if (weatherImage.includes("clear")) {
+        icon = "./images/sun.jpg";
+      } else if (weatherImage.includes("rain")) {
+        icon = "./images/rain.jpg";
+      } else if (weatherImage.includes("snow", "sleet")) {
+        icon = "./images/snow.jpg";
+      } else if (weatherImage.includes("fog")) {
+        icon = "./images/fog.jpg";
+      } else {
+        icon = "./images/overcast.jpg";
+      }
+    });
+  })
+  .catch(error => {
+    console.log("~~~ Error: " + error);
+  });
 
 let items = [];
 
@@ -95,8 +73,8 @@ app.get("/", (req, res) => {
   res.render("list", {
     day: date,
     newItem: items,
-    weather: forcast,
-    extWeather: extendedForcast,
+    weather: weather,
+    extWeather: forcast,
     icon: icon,
     temp: temp
   });
