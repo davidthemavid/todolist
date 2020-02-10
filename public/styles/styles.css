@@ -15,6 +15,10 @@ h2 {
   color: white;
   text-shadow: 1px 3px #ff729d;
 }
+footer {
+  margin-top: 590px;
+  margin-left: 1440px;
+}
 
 .box {
   max-width: 400px;

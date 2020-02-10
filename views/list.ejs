@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Todo List</title>
-    <link rel="stylesheet" href="../styles/styles.css">
-  </head>
-  <body>
 
-
+<%-include ("header"); -%>
+    
     <div class="box" id="heading">
 
 <h1><%=title%></h1>
@@ -36,15 +27,10 @@
     autocomplete="off"
     autofocus
   />
-  <button type="submit" name="btn">+</button>
+  <button type="submit" name="list" value=<%=title%>>+</button>
 
 </form>
 
-
-
-    
-
-    
             <% for(i=0; i<newItem.length; i++){ %>
       <div class="item">
                 <input type="checkbox">
@@ -53,5 +39,4 @@
      <% } %>
     </div>
 
-  </body>
-</html>
+<%- include("footer") -%>

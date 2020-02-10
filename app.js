@@ -84,9 +84,15 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   let listItem = req.body.addInput;
-  items.push(listItem);
 
-  res.redirect("/");
+  if (req.body.list === "Grocery List") {
+    groceries.push(listItem);
+    res.redirect("/groceries");
+  } else {
+    items.push(listItem);
+
+    res.redirect("/");
+  }
 });
 
 app.get("/groceries", (req, res) => {
@@ -100,11 +106,8 @@ app.get("/groceries", (req, res) => {
   });
 });
 
-app.post("/groceries", (req, res) => {
-  let listItem = req.body.addInput;
-  groceries.push(listItem);
-
-  res.redirect("/groceries");
+app.get("/about", (req, res) => {
+  res.render("about");
 });
 
 app.listen(port, () => {
