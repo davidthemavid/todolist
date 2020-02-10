@@ -1,9 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const rq = require("request-promise-native");
-//const config = require("./config.js");
-let key; //= config.key;
-let ipKey; //= config.ipKey;
+const config = require("./config.js");
+let key = config.key;
+let ipKey = config.ipKey;
 const app = express();
 let port = process.env.PORT || 3000;
 
@@ -49,10 +49,11 @@ rq(`http://api.ipstack.com/check?access_key=${ipKey}`, { json: true })
     });
   })
   .catch(error => {
-    console.log("~~~ Error: " + error);
+    console.log("~~~ Error encountered : " + error);
   });
 
 let items = [];
+let groceries = [];
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,7 +73,7 @@ app.get("/", (req, res) => {
   let date = today.toLocaleDateString("en-US", dateOptions);
 
   res.render("list", {
-    day: date,
+    title: "It's " + date,
     newItem: items,
     weather: weather,
     extWeather: forcast,
@@ -86,6 +87,24 @@ app.post("/", (req, res) => {
   items.push(listItem);
 
   res.redirect("/");
+});
+
+app.get("/groceries", (req, res) => {
+  res.render("list", {
+    title: "Grocery List",
+    newItem: groceries,
+    weather: weather,
+    extWeather: forcast,
+    icon: icon,
+    temp: temp
+  });
+});
+
+app.post("/groceries", (req, res) => {
+  let listItem = req.body.addInput;
+  groceries.push(listItem);
+
+  res.redirect("/groceries");
 });
 
 app.listen(port, () => {
