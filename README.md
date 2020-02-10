@@ -1,7 +1,10 @@
 # todolist
 Simple todo list using node, request, express, and ejs.
-<br>Uses ipStack & DarkSky apis to get your location, temperature, and weather details. 
-<br>Displays current day & date.
+<ul>
+<li>Uses ipStack & DarkSky apis to get your location, temperature, and weather details. 
+<li>Displays current day & date.
+<li>Displays an image based off your current weather.
+</ul>
 
 Requires an ipStack & DarkSky API KEY.
 
@@ -9,7 +12,7 @@ Requires an ipStack & DarkSky API KEY.
 <br>https://ipstack.com/documentation
 <br>https://darksky.net/dev
 
-<img src = "./public/images/todolist.jpg">
+<img src = "./public/images/todolist.JPG">
 
 # Instructions
 Create a <b>config.js</b> file in the main directory.
