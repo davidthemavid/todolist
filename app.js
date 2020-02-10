@@ -2,9 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const rq = require("request-promise-native");
 const config = require("./config.js");
+const date = require("./date.js");
+const app = express();
+
 let key = config.key;
 let ipKey = config.ipKey;
-const app = express();
 let port = process.env.PORT || 3000;
 
 let forcast = [];
@@ -62,18 +64,10 @@ app.use(express.static("public"));
 app.get("/");
 
 app.get("/", (req, res) => {
-  let today = new Date();
-
-  let dateOptions = {
-    weekday: "long",
-    day: "numeric",
-    month: "long"
-  };
-
-  let date = today.toLocaleDateString("en-US", dateOptions);
+  let day = date.getDate();
 
   res.render("list", {
-    title: "It's " + date,
+    title: "It's " + day,
     newItem: items,
     weather: weather,
     extWeather: forcast,
