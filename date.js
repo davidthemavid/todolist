@@ -1,6 +1,6 @@
 //calculates current date, day, & time
 
-getDate = () => {
+exports.getDate = () => {
   const today = new Date();
 
   const dateOptions = {
@@ -12,4 +12,3 @@ getDate = () => {
   return today.toLocaleDateString("en-US", dateOptions);
 };
 
-exports.getDate = getDate;
